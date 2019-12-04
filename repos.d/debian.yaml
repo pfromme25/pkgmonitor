@@ -1,0 +1,23 @@
+- name: stretch
+  repository:
+    - dist: [ stretch/main, stretch/contrib, stretch/nonfree ]
+      arch: [ binary-amd64 ]
+      url: http://ftp.de.debian.org/debian/dists/{dist}/{arch}/Packages.gz
+
+- name: buster
+  repository:
+    - dist: [ buster/main, buster/contrib, buster/nonfree ]
+      arch: [ binary-amd64 ]
+      url: http://ftp.de.debian.org/debian/dists/{dist}/{arch}/Packages.gz
+
+- name: testing
+  repository:
+    - dist: [ testing/main, testing/contrib, testing/nonfree ]
+      arch: [ binary-amd64 ]
+      url: http://ftp.de.debian.org/debian/dists/{dist}/{arch}/Packages.gz
+
+- name: sid
+  repository:
+    - dist: [ sid/main, sid/contrib, sid/nonfree ]
+      arch: [ binary-amd64 ]
+      url: http://ftp.de.debian.org/debian/dists/{dist}/{arch}/Packages.gz

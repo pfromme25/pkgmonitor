@@ -1,0 +1,4 @@
+#- repo: buster
+#  packages:
+#      - {^php5: php7.3}
+#      - {^python2: python3}

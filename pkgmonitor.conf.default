@@ -1,0 +1,13 @@
+# Default config file, do not change or delete this.
+# If you need to change the config, create /etc/pkgmonitor.conf.
+[global]
+fetch_cache = ./cache/fetch
+package_cache = ./cache/packages
+
+[pkgmonitor]
+release_order = stretch buster bullseye testing sid
+rules.d = ./rules.d/
+
+[pkgmonitor-update]
+repos.d = ./repos.d/
+
