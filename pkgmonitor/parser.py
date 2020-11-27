@@ -18,6 +18,7 @@
 
 import os
 import gzip
+import lzma
 import sys
 import pathlib
 import time
@@ -25,7 +26,9 @@ import time
 class Parser:
     def __init__(self, name, fetch, cache_dir, verbose=False):
         self.name = name
-        self.fetch = [str(fetch) for fetch in pathlib.Path(fetch).glob('*.gz')]
+        self.fetch_gz = [str(fetch) for fetch in pathlib.Path(fetch).glob('*.gz')]
+        self.fetch_xz = [str(fetch) for fetch in pathlib.Path(fetch).glob('*.xz')]
+        self.fetch = self.fetch_gz + self.fetch_xz
         self.verbose = verbose
         self.pkg_counter = 0
         self.dir = os.path.join(cache_dir, name)
@@ -54,9 +57,12 @@ class Parser:
             return pkg[0]
 
     def parse(self):
-        for pkggz in self.fetch:
-            f = gzip.open(pkggz, mode='rt', encoding="utf-8")
-            for line in f:
+        for pkg in self.fetch:
+            if pkg.endswith('.gz'):
+                pkg_file = gzip.open(pkg, mode='rt', encoding="utf-8")
+            elif pkg.endswith('.xz'):
+                pkg_file = lzma.open(pkg, mode='rt', encoding="utf-8")
+            for line in pkg_file:
                 if line.startswith('Package:'):
                     self.pkg_counter += 1
                     pkg = line.split()[1]
@@ -66,7 +72,7 @@ class Parser:
                         msg = "Writing to file: "+cache_file+" line: "+pkg
                         print('\x1b[2K', end='\r')
                         print(msg, end='\r')
-            f.close()
+            pkg_file.close()
         if self.verbose:
             print()
             print("Parsed "+str(self.pkg_counter)+" packages.")
